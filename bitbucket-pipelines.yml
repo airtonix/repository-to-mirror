@@ -10,13 +10,14 @@ pipelines:
         name: 'mirror repo'
         script:
           - |
-            // clone it as a mirror
+            set -euf -o pipefail;
+            # clone it as a mirror
             git clone --mirror $BITBUCKET_GIT_SSH_ORIGIN ./mirrored;
             cd ./mirrored;
             git fetch -p origin;
 
-            // target the new location
+            # target the new location
             git remote set-url --push origin https://airtonix:$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/airtonix/$BITBUCKET_REPO_SLUG;
 
-            // replicate
+            # replicate
             git push --mirror;
